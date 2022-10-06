@@ -16,9 +16,9 @@ func createAccountForEntry(t *testing.T) Account {
 		Balance:  util.RandomMoney(),
 		Currency: util.RandomCurrency(),
 	}
-	acc, _ := testQueries.CreateAccount(context.Background(), args)
-	//require.NoError(t, err)
-	//require.NotEmpty(t, acc)
+	acc,err := testQueries.CreateAccount(context.Background(), args)
+	require.NoError(t, err)
+	require.NotEmpty(t, acc)
 	require.NotZero(t, acc.ID)
 	return acc
 }
@@ -75,7 +75,7 @@ func TestListEntries(t *testing.T) {
 	entries, err := testQueries.ListEntries(context.Background(), args)
 	require.NoError(t, err)
 	require.NotEmpty(t, entries)
-	require.True(t,len(entries) <= int(args.Limit))
+	require.True(t, len(entries) <= int(args.Limit))
 }
 
 func TestDeleteEntry(t *testing.T) {
@@ -87,4 +87,3 @@ func TestDeleteEntry(t *testing.T) {
 	require.EqualError(t, err, sql.ErrNoRows.Error())
 	require.Empty(t, entry2)
 }
-
